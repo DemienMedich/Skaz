@@ -2,7 +2,8 @@
 #include "Character/character.h"
 
 int main(void) {
-    characterProfile(); 
+    characterMenu();
+    characterProfile();
     printf("\tVersion 0.0.1\n");
     return 0;
 }
