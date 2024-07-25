@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "CharacterSRC.h"
+
+#include "character.h"
 
 int characterProfile(void) {
     printf("Анкета персонажа!\n");

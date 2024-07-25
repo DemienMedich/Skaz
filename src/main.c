@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Character/CharacterSRC.h"
+#include "Character/character.h"
 
 int main(void) {
     characterProfile(); 

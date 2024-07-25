@@ -1,11 +1,11 @@
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-MAIN_DIR = .\
+MAIN_DIR = src
 
 all: DD
 
-DD: DD.c
-	$(CC) $(CFLAGS) -o DD DD.c Character/CharacterProfile.c
+DD: $(MAIN_DIR)\main.c $(MAIN_DIR)\Character\character_profile.c
+	$(CC) $(CFLAGS) -o DD $(MAIN_DIR)\main.c $(MAIN_DIR)\Character\character_profile.c
 
 format:
-	clang-format -i *.c
+	powershell -Command "Get-ChildItem -Recurse -Include *.c,*.h -File | ForEach-Object { clang-format -i $_.FullName }"
