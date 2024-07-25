@@ -1,8 +1,8 @@
-#include <stdio.h> 
+#include <stdio.h>
+#include "Character/CharacterSRC.h"
 
-int main(void){
-    
+int main(void) {
+    characterProfile(); 
     printf("\tVersion 0.0.1\n");
-
-  return(0);
+    return 0;
 }
