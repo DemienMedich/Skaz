@@ -3,6 +3,24 @@
 #include "character.h"
 
 int characterMenu(void) {
-    printf("Меню персонажа!\n");
+    int choice;
+
+    printf("Хотите создать нового персонажа или выбрать из готовых?\n");
+    printf("1 - Создать нового.\n");
+    printf("2 - Выбрать готового.\n");
+    printf("Ваш выбор: ");
+    scanf("%d", &choice);
+    switch (choice) {
+    case 1:
+        printf("Создать нового персонажа.\n");
+        break;
+
+    case 2:
+        printf("Выбрать готового героя.\n");
+        break;
+    
+    default:
+        break;
+    }
     return 0;
 }
