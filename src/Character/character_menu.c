@@ -5,14 +5,15 @@
 int characterMenu(void) {
     int choice;
 
-    printf("Хотите создать нового персонажа или выбрать из готовых?\n");
+    printf("Выбор героя:\n");
     printf("1 - Создать нового.\n");
     printf("2 - Выбрать готового.\n");
     printf("Ваш выбор: ");
     scanf("%d", &choice);
+
     switch (choice) {
     case 1:
-        printf("Создать нового персонажа.\n");
+        printf("Создать нового героя.\n");
         break;
 
     case 2:
