@@ -3,5 +3,6 @@
 
 int characterMenu(void);
 int characterProfile(void);
+int characterList(void);
 
 #endif
