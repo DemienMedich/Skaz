@@ -1,3 +1,0 @@
-race: evil_spirits
-class: buffoon
-level: 2

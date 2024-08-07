@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 MAIN_DIR = src
 CHRCTR = src\character
-INTFC = interface
+INTFC = src\interface
 
 all: DD
 

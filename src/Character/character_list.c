@@ -1,19 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
 
 #define MAX_LINE_LENGTH 256
 #define MAX_OPTION_LENGTH 50
 #define MAX_OPTIONS 10
+#define CHARACTER_DIR "src/character/character_lib/"
+
+int getNextCharacterNumber() {
+    DIR *dir;
+    struct dirent *entry;
+    int maxNumber = 0;
+
+    dir = opendir(CHARACTER_DIR);
+    if (dir == NULL) {
+        perror("Не удалось открыть директорию");
+        return 1;
+    }
+
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_type == DT_REG) {
+            int num;
+            if (sscanf(entry->d_name, "%d.txt", &num) == 1) {
+                if (num > maxNumber) {
+                    maxNumber = num;
+                }
+            }
+        }
+    }
+
+    closedir(dir);
+    return maxNumber + 1;
+}
 
 int characterList(void) {
     FILE *file, *outputFile;
-    char filename[] = "src/character/base_character_info/the_hero_template.txt";
-    char outputFilename[] = "src/character/character_lib/character_new.txt"; // Файл для записи выбора пользователя
+    char filename[] = "src/character/base_character_info/the_hero_template.txt"; // Файл опций
+    char outputFilename[MAX_LINE_LENGTH]; // Файл для записи выбора пользователя
+    char characterName[MAX_OPTION_LENGTH];
     char line[MAX_LINE_LENGTH];
     char options[MAX_OPTIONS][MAX_OPTION_LENGTH];
     int numOptions = 0;
     char choice[MAX_OPTION_LENGTH];
+    int characterNumber = getNextCharacterNumber();
+
+    // Создание имени файла на основе номера персонажа
+    snprintf(outputFilename, sizeof(outputFilename), "src/character/character_lib/%d.txt", characterNumber);
 
     file = fopen(filename, "r");
     if (file == NULL) {
@@ -28,12 +61,21 @@ int characterList(void) {
         return 1;
     }
 
-    while (fgets(line, sizeof(line), file)!= NULL) {
-        // Разберем строку на варианты
+    printf("Введите имя персонажа: ");
+    scanf("%s", characterName);
+
+    // Запись имени персонажа в начало файла
+    fprintf(outputFile, "Имя персонажа: %s\n", characterName);
+
+    while (fgets(line, sizeof(line), file) != NULL) {
         char *token = strtok(line, ":;, \n");
-        printf("%s: ", token);
+        char key[MAX_OPTION_LENGTH];
+        if (token != NULL) {
+            strcpy(key, token);
+            printf("%s: ", key);
+        }
         token = strtok(NULL, ":;, \n");
-        while (token!= NULL && numOptions < MAX_OPTIONS) {
+        while (token != NULL && numOptions < MAX_OPTIONS) {
             strcpy(options[numOptions], token);
             printf("%s, ", options[numOptions]);
             token = strtok(NULL, ":;, \n");
@@ -41,25 +83,24 @@ int characterList(void) {
         }
         printf("\n");
 
-        // Предложим пользователю выбрать один из вариантов
-        printf("Выберите один из вариантов: ");
-        for (int i = 0; i < numOptions; i++) {
-            printf("%d - %s, ", i + 1, options[i]);
-        }
-        printf("\n");
         int choiceNum;
-        scanf("%d", &choiceNum);
-        if (choiceNum >= 1 && choiceNum <= numOptions) {
-            strcpy(choice, options[choiceNum - 1]);
-        } else {
-            printf("Недопустимый выбор. Будет выбран первый вариант.\n");
-            strcpy(choice, options[0]);
+        while (1) {
+            printf("Выберите один из вариантов:\n");
+            for (int i = 0; i < numOptions; i++) {
+                printf("%d - %s\n", i + 1, options[i]);
+            }
+            printf("\n");
+            scanf("%d", &choiceNum);
+            if (choiceNum >= 1 && choiceNum <= numOptions) {
+                strcpy(choice, options[choiceNum - 1]);
+                break;
+            } else {
+                printf("Недопустимый выбор. Пожалуйста, попробуйте снова.\n");
+            }
         }
 
-        // Запишем выбор пользователя в файл
-        fprintf(outputFile, "%s: %s\n", strtok(line, ":;, \n"), choice);
+        fprintf(outputFile, "%s: %s\n", key, choice);
 
-        // Сбросим количество вариантов и очистим массив вариантов
         numOptions = 0;
         for (int i = 0; i < MAX_OPTIONS; i++) {
             options[i][0] = '\0';

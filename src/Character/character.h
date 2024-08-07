@@ -3,6 +3,7 @@
 
 int characterMenu(void);
 int characterProfile(void);
+int getNextCharacterNumber();
 int characterList(void);
 
 #endif
