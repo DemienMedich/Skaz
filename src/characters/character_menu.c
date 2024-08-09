@@ -16,11 +16,12 @@ int characterMenu(void) {
     switch (choice) {
     case 1:
         printf("Выберите героя:\n");
+        selectMenu();
         break;
 
     case 2:
         printf("Создаем героя:\n");
-        characterList();
+        characterNew();
         break;
 
     case 3:

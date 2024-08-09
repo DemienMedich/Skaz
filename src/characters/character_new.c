@@ -7,7 +7,7 @@
 #define MAX_LINE_LENGTH 256
 #define MAX_OPTION_LENGTH 50
 #define MAX_OPTIONS 10
-#define CHARACTER_DIR "src/character/character_lib/"
+#define CHARACTER_DIR "src/characters/characters_user_lib/"
 
 int getNextCharacterNumber() {
     DIR *dir;
@@ -45,9 +45,9 @@ int isNumeric(const char *str) {
     return 1;
 }
 
-int characterList(void) {
+int characterNew(void) {
     FILE *file, *outputFile;
-    char filename[] = "src/character/base_character_info/the_hero_template.txt"; // Файл опций
+    char filename[] = "src/characters/base_characters_info/the_hero_template.txt"; // Файл опций
     char outputFilename[MAX_LINE_LENGTH]; // Файл для записи выбора пользователя
     char characterName[MAX_OPTION_LENGTH];
     int characterNumber = getNextCharacterNumber();
@@ -57,7 +57,7 @@ int characterList(void) {
     char choice[MAX_OPTION_LENGTH];
 
     // Создание имени файла на основе номера персонажа
-    snprintf(outputFilename, sizeof(outputFilename), "src/character/character_lib/%d.txt", characterNumber);
+    snprintf(outputFilename, sizeof(outputFilename), "src/characters/characters_user_lib/%d.txt", characterNumber);
 
     file = fopen(filename, "r");
     if (file == NULL) {
