@@ -1,3 +1,0 @@
-race: evil
-class: hamster
-level: 1

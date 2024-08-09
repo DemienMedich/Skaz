@@ -6,6 +6,6 @@ int main(void) {
     mainInterface();
     characterMenu();
     characterProfile();
-    printf("\tVersion 0.0.2\n");
+    printf("\tVersion 0.0.3\n");
     return 0;
 }

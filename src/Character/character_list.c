@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <ctype.h>
 
 #define MAX_LINE_LENGTH 256
 #define MAX_OPTION_LENGTH 50
@@ -34,16 +35,26 @@ int getNextCharacterNumber() {
     return maxNumber + 1;
 }
 
+int isNumeric(const char *str) {
+    while (*str) {
+        if (!isdigit(*str)) {
+            return 0;
+        }
+        str++;
+    }
+    return 1;
+}
+
 int characterList(void) {
     FILE *file, *outputFile;
     char filename[] = "src/character/base_character_info/the_hero_template.txt"; // Файл опций
     char outputFilename[MAX_LINE_LENGTH]; // Файл для записи выбора пользователя
     char characterName[MAX_OPTION_LENGTH];
+    int characterNumber = getNextCharacterNumber();
     char line[MAX_LINE_LENGTH];
     char options[MAX_OPTIONS][MAX_OPTION_LENGTH];
     int numOptions = 0;
     char choice[MAX_OPTION_LENGTH];
-    int characterNumber = getNextCharacterNumber();
 
     // Создание имени файла на основе номера персонажа
     snprintf(outputFilename, sizeof(outputFilename), "src/character/character_lib/%d.txt", characterNumber);
@@ -61,11 +72,14 @@ int characterList(void) {
         return 1;
     }
 
-    printf("Введите имя персонажа: ");
+    printf("Введите имя персонажа [ENG]: ");
     scanf("%s", characterName);
 
     // Запись имени персонажа в начало файла
     fprintf(outputFile, "Имя персонажа: %s\n", characterName);
+
+    // Добавляем уровень персонажа на новой строке
+    fprintf(outputFile, "Уровень: 1\n");
 
     while (fgets(line, sizeof(line), file) != NULL) {
         char *token = strtok(line, ":;, \n");
@@ -90,12 +104,20 @@ int characterList(void) {
                 printf("%d - %s\n", i + 1, options[i]);
             }
             printf("\n");
-            scanf("%d", &choiceNum);
-            if (choiceNum >= 1 && choiceNum <= numOptions) {
-                strcpy(choice, options[choiceNum - 1]);
-                break;
+
+            char input[MAX_OPTION_LENGTH];
+            scanf("%s", input);
+
+            if (isNumeric(input)) {
+                choiceNum = atoi(input);
+                if (choiceNum >= 1 && choiceNum <= numOptions) {
+                    strcpy(choice, options[choiceNum - 1]);
+                    break;
+                } else {
+                    printf("Недопустимый выбор. Пожалуйста, выберите число от 1 до %d.\n", numOptions);
+                }
             } else {
-                printf("Недопустимый выбор. Пожалуйста, попробуйте снова.\n");
+                printf("Ошибка: ввод должен быть числом. Пожалуйста, попробуйте снова.\n");
             }
         }
 
